@@ -1,4 +1,5 @@
 import numpy as np
+import scipy.io
 import pyfftw
 import time
 import matplotlib.pyplot as plt
@@ -41,9 +42,11 @@ for l in lengths:
         time_numpy.append(time_end - time_start)
 
         time_start = time.time()
-        dash7_packet_fft = pyfftw.interfaces.numpy_fft.fft(data)
+        result = pyfftw.interfaces.numpy_fft.fft(data)
         time_end = time.time()
         time_fftw.append(time_end - time_start)
+
+        scipy.io.savemat('output.mat', mdict={'lengths': lengths, 'result_numpy': result_numpy, 'result_fftw': result_fftw})
 
     result_numpy.append(np.average(time_numpy))
     result_fftw.append(np.average(time_fftw))
